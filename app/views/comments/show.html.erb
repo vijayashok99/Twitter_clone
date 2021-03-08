@@ -1,0 +1,55 @@
+
+<h2>Comment</h2>
+<p>
+  <strong> <%= @comment.name %> </strong> </br> @<%= @comment.user_name %>
+  <div>
+    <%= @comment.comment %>
+  </div>
+  <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+</p>
+
+<%= link_to "Add a Reply =>", new_tweet_comment_path(tweet_id: @tweet.id, parent_comment_id: @comment.id), class: "btn btn-large" %> 
+</br>
+</br>
+
+
+<table>
+
+  <thead>
+    <tr>
+      <th>Replies</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @replies.each do |comment| %>
+      <tr>
+        <td> <strong> <%= comment.name %> </strong>  @<%= comment.user_name %> <td> <small>Submitted <%= time_ago_in_words(comment.created_at) %> ago</small>
+      </tr>
+      <tr>
+        <td><%= comment.comment %></td>        
+        <% if true && current_user.id == comment.user_id %>
+          <td><%= link_to 'Edit', edit_tweet_comment_path(id: comment.id, tweet_id: @tweet.id) %></td>
+          <td><%= link_to 'Destroy', tweet_comment_path(@tweet, comment), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+      <tr>
+        <td><%= comment.comment_count %> <%= (comment.comment_count) == 1 ? 'Comment' : 'Comments'%></td>
+        <td><%= comment.likes_count %> <%= (comment.likes_count) == 1 ? 'Like' : 'Likes'%></td>
+        <td><%= button_to 'Like', likes_path(comment_id: comment.id), method: :post %> </td>
+        <td><button onclick="show_comment(<%= @tweet.id %>, <%= comment.id %>)"> Reply </button></td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</br> </br>
+
+<%= link_to 'Back', tweets_path %>
+
+<script type="text/javascript">
+  function show_comment(tweet_id, comment_id) {
+    location.href = "/tweets/" + tweet_id + "/comments/" + comment_id
+  }
+</script>

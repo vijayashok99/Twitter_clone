@@ -1,0 +1,26 @@
+<%= form_with(model: [tweet, comment], local: true) do |form| %>
+  <% if comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+        <% comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  </br>
+  <div class="field">
+    <%= form.label :comment %>
+    <%= form.text_area :comment, size: "50", placeholder: "What's your take?" %>
+  </div>
+
+  <% if @parent_comment_id.present? %>
+    <%= hidden_field_tag :parent_comment_id, @parent_comment_id %> 
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
