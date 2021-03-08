@@ -1,3 +1,1 @@
-# README
-
-Twitter Clone
+# Twitter Clone
