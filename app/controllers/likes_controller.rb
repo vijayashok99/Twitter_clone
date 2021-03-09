@@ -9,9 +9,10 @@ class LikesController < ApplicationController
     else
       record_likes.create(user_id: current_user.id)
     end
-    respond_to do |format|
-      format.html { redirect_to request.referrer }
-    end
+    return render json: { success: true, likes_count: @record.likes_count }
+    # respond_to do |format|
+    #   format.html { redirect_to request.referrer }
+    # end
   end
 
   private

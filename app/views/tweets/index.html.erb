@@ -32,8 +32,11 @@
       <% end %>
       <tr>
         <td><%= tweet.comment_count %> <%= (tweet.comment_count) == 1 ? 'Comment' : 'Comments'%></td>
-        <td><%= tweet.likes_count %> <%= (tweet.likes_count) == 1 ? 'Like' : 'Likes'%></td>
-        <td><%= button_to 'Like', likes_path(tweet_id: tweet.id), method: :post %> </td>
+        <td id='like_count'><%= tweet.likes_count %> <%= (tweet.likes_count) == 1 ? 'Like' : 'Likes'%></td>
+        <% if false %>
+          <td><%= button_to 'Like', likes_path(tweet_id: tweet.id), method: :post %> </td>
+        <% end %>
+        <td><button onclick="like_post(<%= tweet.id %>)">Like</button> </td>
         <td><button onclick="show_tweet(<%= tweet.id %>)"> Comment </button></td> 
       </tr>
     <% end %>
@@ -44,6 +47,19 @@
 <script type="text/javascript">
   function show_tweet(tweet_id) {
     location.href = "/tweets/"+tweet_id
+  }
+
+  function like_post(id) {
+    $.ajax({
+      url: "/likes",
+      type: "post",
+      data: { tweet_id: id },
+      success: function(data) { 
+        console.log(data.likes_count)
+        $('#like_count').html(data.likes_count);
+       },
+      error: function(data) {}
+    })
   }
 </script>
 
